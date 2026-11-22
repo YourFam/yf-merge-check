@@ -1,0 +1,31 @@
+{
+  "name": "@yourfam/yf-merge-check",
+  "version": "0.1.0",
+  "description": "Check whether a git merge would conflict, without touching the current branch.",
+  "type": "module",
+  "bin": {
+    "yf-merge-check": "bin/yf-merge-check.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "author": {
+    "name": "YourFam",
+    "email": "kamal@yourfam.co",
+    "url": "https://github.com/YourFam"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "git+https://github.com/YourFam/yf-merge-check.git"
+}

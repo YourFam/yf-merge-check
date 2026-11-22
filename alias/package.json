@@ -1,0 +1,11 @@
+{
+  "name": "yf-merge-check",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "yf-merge-check": "bin/yf-merge-check.js"
+  },
+  "dependencies": {
+    "@yourfam/yf-merge-check": "0.1.0"
+  }
+}
