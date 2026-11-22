@@ -1,4 +1,4 @@
-import { parseArgs, helpText } from "./args.js";
+import { packageVersion, parseArgs, helpText } from "./args.js";
 import { CliError } from "./errors.js";
 import { fetchAll, mergeTargets, repoTop, resolveName, spawnGit } from "./git.js";
 import { updateGitignore } from "./gitignore.js";
@@ -33,6 +33,10 @@ async function execute({ argv, stdout, stderr, cwd, spawnImpl, now }) {
   const args = parseArgs(argv);
   if (args.help) {
     stdout.write(helpText);
+    return 0;
+  }
+  if (args.version) {
+    stdout.write(`${packageVersion}\n`);
     return 0;
   }
 

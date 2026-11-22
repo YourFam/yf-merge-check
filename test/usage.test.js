@@ -3,6 +3,7 @@ import { mkdtemp, readdir, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
+import { packageVersion } from "../src/args.js";
 import { run } from "../src/index.js";
 import { capture } from "./helpers.js";
 
@@ -19,6 +20,7 @@ Options:
   --stack               Merge targets in order onto each other, starting from the base.
   --fetch               git fetch --all --prune before resolving names.
   --gitignore           Add yf-merge/ to the repository root .gitignore.
+  --version             Print the version and exit.
   -h, --help            Show this help.
 
 There is no default base and no default target.
@@ -60,11 +62,26 @@ test("help exits 0, prints the usage text, and writes no report", async () => {
   assert.equal(also.calls, 0);
 });
 
+test("version exits 0, prints the package version, and writes no report", async () => {
+  const result = await quietRun(["--version", "--base"]);
+  assert.equal(result.code, 0);
+  assert.equal(result.out, `${packageVersion}\n`);
+  assert.equal(result.err, "");
+  assert.equal(result.calls, 0);
+  assert.deepEqual(result.entries, []);
+
+  const helpWins = await quietRun(["--version", "--help"]);
+  assert.equal(helpWins.code, 0);
+  assert.equal(helpWins.out, HELP);
+  assert.equal(helpWins.calls, 0);
+});
+
 test("usage errors exit 2 and do not spawn git", async () => {
   const cases = [
     [["feature/a"], "Error: --base <branch> is required.\n"],
     [["--base", "main"], "Error: at least one target branch is required.\n"],
     [["--base", "main", "--fetch=true", "feature/a"], "Error: Unknown option: --fetch=true.\n"],
+    [["--version=1"], "Error: Unknown option: --version=1.\n"],
     [["--base"], "Error: Missing value for --base.\n"],
     [["--base", "-main", "feature/a"], "Error: Missing value for --base.\n"],
     [["--base", "main", "--base", "other", "feature/a"], "Error: --base was given more than once.\n"],

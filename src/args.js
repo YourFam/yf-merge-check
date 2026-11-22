@@ -1,4 +1,8 @@
+import { createRequire } from "node:module";
 import { CliError } from "./errors.js";
+
+const require = createRequire(import.meta.url);
+export const packageVersion = require("../package.json").version;
 
 export const helpText = `Check whether a merge would conflict. The current branch is not changed.
 
@@ -13,6 +17,7 @@ Options:
   --stack               Merge targets in order onto each other, starting from the base.
   --fetch               git fetch --all --prune before resolving names.
   --gitignore           Add yf-merge/ to the repository root .gitignore.
+  --version             Print the version and exit.
   -h, --help            Show this help.
 
 There is no default base and no default target.
@@ -22,6 +27,9 @@ export function parseArgs(argv) {
   const tokens = argv.slice(2);
   if (tokens.includes("--help") || tokens.includes("-h")) {
     return { help: true };
+  }
+  if (tokens.includes("--version")) {
+    return { version: true };
   }
 
   let base;
